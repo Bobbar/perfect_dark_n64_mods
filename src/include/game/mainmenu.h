@@ -64,6 +64,7 @@ MenuItemHandlerResult menuhandlerCoopRadar(s32 operation, struct menuitem *item,
 MenuItemHandlerResult menuhandlerCutsceneSubtitles(s32 operation, struct menuitem *item, union handlerdata *data);
 MenuItemHandlerResult menuhandlerHeadRoll(s32 operation, struct menuitem *item, union handlerdata *data);
 MenuItemHandlerResult menuhandlerHiRes(s32 operation, struct menuitem *item, union handlerdata *data);
+MenuItemHandlerResult menuhandlerAntiAlias(s32 operation, struct menuitem* item, union handlerdata *data);
 MenuItemHandlerResult menuhandlerInGameSubtitles(s32 operation, struct menuitem *item, union handlerdata *data);
 MenuItemHandlerResult menuhandlerLangFilter(s32 operation, struct menuitem *item, union handlerdata *data);
 MenuItemHandlerResult menuhandlerLookAhead(s32 operation, struct menuitem *item, union handlerdata *data);

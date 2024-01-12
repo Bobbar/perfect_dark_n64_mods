@@ -259,7 +259,7 @@ void bootCreateSchedThread(void)
 	if (osTvType == OS_TV_MPAL) {
 		osCreateScheduler(&g_Sched, &g_SchedThread, OS_VI_MPAL_LAN1, 1);
 	} else {
-		osCreateScheduler(&g_Sched, &g_SchedThread, OS_VI_NTSC_LAN1, 1);
+		osCreateScheduler(&g_Sched, &g_SchedThread, OS_VI_NTSC_LPN1, 1);
 	}
 
 	osScAddClient(&g_Sched, &g_MainSchedClient, &g_MainMesgQueue, false);

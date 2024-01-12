@@ -249,11 +249,14 @@ void viBlack(bool black)
 	g_ViUnblackTimer = black;
 }
 
+extern bool g_LvAntialias;
+
 void viHandleRetrace(void)
 {
 	s32 prevmask;
 	s32 offset;
 	s32 reg;
+	u32 features;
 
 	if (g_ViShakeTimer != 0) {
 		g_ViShakeTimer--;
@@ -280,11 +283,23 @@ void viHandleRetrace(void)
 	osSetIntMask(prevmask);
 #endif
 
+	features = OS_VI_GAMMA_OFF;
+
+	if (g_LvAntialias) {
+		features |= OS_VI_DITHER_FILTER_ON;
+	}
+	else {
+		features |= OS_VI_DITHER_FILTER_OFF;
+		features |= OS_VI_GAMMA_DITHER_OFF;
+		features |= OS_VI_DIVOT_OFF;
+		features |= OS_VI_GAMMA_OFF;
+	}
+
 	osViSetMode(var8008dd60[1 - var8005ce74]);
 	osViBlack(g_ViUnblackTimer);
 	osViSetXScale(g_ViXScalesBySlot[1 - var8005ce74]);
 	osViSetYScale(g_ViYScalesBySlot[1 - var8005ce74]);
-	osViSetSpecialFeatures(OS_VI_GAMMA_OFF | OS_VI_DITHER_FILTER_ON);
+	osViSetSpecialFeatures(features);
 }
 
 void viUpdateMode(void)
@@ -338,14 +353,14 @@ void viUpdateMode(void)
 			if (osTvType == OS_TV_MPAL) {
 				var8008dcc0[slot] = osViModeTable[OS_VI_MPAL_LAN1];
 			} else {
-				var8008dcc0[slot] = osViModeTable[OS_VI_NTSC_LAN1];
+				var8008dcc0[slot] = osViModeTable[OS_VI_NTSC_LPN1];
 			}
 		} else {
 			if (osTvType == OS_TV_MPAL) {
 				if (g_ViIs16Bit && g_ViIs16Bit && g_ViIs16Bit);
 				var8008dcc0[slot] = osViModeTable[OS_VI_MPAL_LAN2];
 			} else {
-				var8008dcc0[slot] = osViModeTable[OS_VI_NTSC_LAN2];
+				var8008dcc0[slot] = osViModeTable[OS_VI_NTSC_LPN2];
 			}
 		}
 #endif
@@ -392,7 +407,7 @@ void viUpdateMode(void)
 		if (osTvType == OS_TV_MPAL) {
 			var8008dcc0[slot] = osViModeTable[OS_VI_MPAL_HAF1];
 		} else {
-			var8008dcc0[slot] = osViModeTable[OS_VI_NTSC_HAF1];
+			var8008dcc0[slot] = osViModeTable[OS_VI_NTSC_HPN1];
 		}
 #endif
 

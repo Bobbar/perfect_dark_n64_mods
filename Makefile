@@ -38,7 +38,7 @@ COMPILER = gcc
 #
 # Supported values: -O0, -O1, -O2, -Os
 
-GCC_OPT_LVL = -Os
+GCC_OPT_LVL = -O3
 
 # PAL - Whether to use the PAL television standard (1) or NTSC (0).
 #

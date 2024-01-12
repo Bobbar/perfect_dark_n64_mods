@@ -395,6 +395,76 @@ char *cheatGetNameIfUnlocked(struct menuitem *item)
 	return langGet(L_MPWEAPONS_074); // "----------"
 }
 
+static s32 menuhandlerUnlockEverything(s32 operation, struct menuitem* item, union handlerdata* data)
+{
+	if (operation == MENUOP_SET) {
+		gamefileUnlockEverything();
+	}
+	return 0;
+}
+
+struct menuitem g_CheatsConfirmUnlockMenuItems[] = {
+	{
+		MENUITEMTYPE_LABEL,
+		0,
+		MENUITEMFLAG_LITERAL_TEXT,
+		(uintptr_t)"Are you sure?\n\nThis will overwrite any progress\nsaved to the current profile.\n",
+		0,
+		NULL,
+	},
+	{
+		MENUITEMTYPE_SEPARATOR,
+		0,
+		0,
+		0x00000082,
+		0,
+		NULL,
+	},
+	{
+		MENUITEMTYPE_MARQUEE,
+		0,
+		MENUITEMFLAG_SMALLFONT | MENUITEMFLAG_MARQUEE_FADEBOTHSIDES | MENUITEMFLAG_LITERAL_TEXT,
+		(uintptr_t)"Unlocks all cheats, weapons, missions, challenges and combat simulator items.\n",
+		0,
+		NULL,
+	},
+	{
+		MENUITEMTYPE_SEPARATOR,
+		0,
+		0,
+		0x00000082,
+		0,
+		NULL,
+	},
+	{
+		MENUITEMTYPE_SELECTABLE,
+		0,
+		MENUITEMFLAG_SELECTABLE_CENTRE | MENUITEMFLAG_SELECTABLE_CLOSESDIALOG,
+		L_OPTIONS_191, // "No"
+		0,
+		NULL,
+	},
+	{
+		MENUITEMTYPE_SELECTABLE,
+		0,
+		MENUITEMFLAG_SELECTABLE_CENTRE | MENUITEMFLAG_SELECTABLE_CLOSESDIALOG,
+		L_OPTIONS_190, // "Yes"
+		0,
+		menuhandlerUnlockEverything,
+	},
+	{ MENUITEMTYPE_END },
+};
+
+
+struct menudialogdef g_CheatsConfirmUnlockMenuDialog = {
+	MENUDIALOGTYPE_DANGER,
+	L_OPTIONS_188, // "Warning"
+	g_CheatsConfirmUnlockMenuItems,
+	NULL,
+	0,
+	NULL,
+};
+
 MenuDialogHandlerResult cheatMenuHandleDialog(s32 operation, struct menudialogdef *dialogdef, union handlerdata *data)
 {
 	if (operation == MENUOP_OPEN) {
@@ -1537,6 +1607,14 @@ struct menuitem g_CheatsMenuItems[] = {
 		L_MPWEAPONS_217, // "Turn off all Cheats"
 		0,
 		cheatMenuHandleTurnOffAllCheats,
+	},
+	{
+		MENUITEMTYPE_SELECTABLE,
+		0,
+		MENUITEMFLAG_LITERAL_TEXT | MENUITEMFLAG_SELECTABLE_OPENSDIALOG,
+		(uintptr_t)"Unlock Everything\n",
+		0,
+		(void*)&g_CheatsConfirmUnlockMenuDialog,
 	},
 	{
 		MENUITEMTYPE_SEPARATOR,

@@ -483,11 +483,19 @@ char *menuResolveText(uintptr_t thing, void *dialogoritem)
 
 char *menuResolveParam2Text(struct menuitem *item)
 {
+	if (item->flags & MENUITEMFLAG_LITERAL_TEXT) {
+		return (unsigned char*)item->param2;
+	}
+
 	return menuResolveText(item->param2, item);
 }
 
 char *menuResolveDialogTitle(struct menudialogdef *dialogdef)
 {
+	if (dialogdef->flags & MENUDIALOGFLAG_LITERAL_TEXT) {
+		return (unsigned char*)dialogdef->title;
+	}
+
 	return menuResolveText(dialogdef->title, dialogdef);
 }
 

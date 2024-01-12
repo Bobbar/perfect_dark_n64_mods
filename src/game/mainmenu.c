@@ -449,6 +449,19 @@ MenuItemHandlerResult menuhandlerHiRes(s32 operation, struct menuitem *item, uni
 	return 0;
 }
 
+MenuItemHandlerResult menuhandlerAntiAlias(s32 operation, struct menuitem *item, union handlerdata *data)
+{
+	switch (operation) {
+	case MENUOP_GET:
+		return g_LvAntialias == true;
+	case MENUOP_SET:
+		g_LvAntialias = data->checkbox.value;
+		g_Vars.modifiedfiles |= MODFILE_GAME;
+	}
+
+	return 0;
+}
+
 MenuItemHandlerResult menuhandlerAmmoOnScreen(s32 operation, struct menuitem *item, union handlerdata *data)
 {
 	u32 mpchrnum;
@@ -2504,6 +2517,8 @@ struct menudialogdef g_2PMissionAudioOptionsVMenuDialog = {
 	NULL,
 };
 
+bool g_LvAntialias = false;
+
 struct menuitem g_VideoOptionsMenuItems[] = {
 	{
 		MENUITEMTYPE_DROPDOWN,
@@ -2528,6 +2543,14 @@ struct menuitem g_VideoOptionsMenuItems[] = {
 		L_OPTIONS_217, // "Hi-Res"
 		0,
 		menuhandlerHiRes,
+	},
+	{
+		MENUITEMTYPE_CHECKBOX,
+		0,
+		MENUITEMFLAG_LITERAL_TEXT,
+		(uintptr_t)"Anti-Aliasing.\n",
+		0,
+		menuhandlerAntiAlias,
 	},
 #if PAL
 	{
