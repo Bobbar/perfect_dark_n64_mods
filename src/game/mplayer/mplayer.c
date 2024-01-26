@@ -107,6 +107,18 @@ struct mpweapon g_MpWeapons[NUM_MPWEAPONS] = {
 	/*0x2e*/ { WEAPON_DISABLED },
 };
 
+
+#define PLAYER_EXT_CFG_DEFAULT { \
+	.crosshaircolour = 0x00ff0028, \
+}
+
+struct extplayerconfig g_PlayerExtCfg[MAX_PLAYERS] = {
+	PLAYER_EXT_CFG_DEFAULT,
+	PLAYER_EXT_CFG_DEFAULT,
+	PLAYER_EXT_CFG_DEFAULT,
+	PLAYER_EXT_CFG_DEFAULT,
+};
+
 /**
  * Converts the given value into a float on a curved scale from 0.1 to 10.
  *

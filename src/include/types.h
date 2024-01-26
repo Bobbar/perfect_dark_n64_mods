@@ -6035,4 +6035,10 @@ struct xz {
 	f32 z;
 };
 
+struct extplayerconfig {
+	u32 crosshaircolour;
+	u32 crosshairsize;
+};
+
+
 #endif

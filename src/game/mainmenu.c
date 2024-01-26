@@ -38,6 +38,8 @@ u8 g_InventoryWeapon;
 struct menudialogdef g_2PMissionControlStyleMenuDialog;
 struct menudialogdef g_CiControlPlayer2MenuDialog;
 struct menudialogdef g_CinemaMenuDialog;
+extern struct menudialogdef g_ExtendedMenuDialog;
+
 
 char *menuTextCurrentStageName(struct menuitem *item)
 {
@@ -3463,6 +3465,14 @@ struct menuitem g_SoloMissionOptionsMenuItems[] = {
 		0,
 		(void *)&g_MissionDisplayOptionsMenuDialog,
 	},
+	{
+		MENUITEMTYPE_SELECTABLE,
+		0,
+		MENUITEMFLAG_SELECTABLE_OPENSDIALOG | MENUITEMFLAG_BIGFONT | MENUITEMFLAG_LITERAL_TEXT,
+		(uintptr_t)"Extended\n",
+		0,
+		(void*)&g_ExtendedMenuDialog,
+	},
 	{ MENUITEMTYPE_END },
 };
 
@@ -3498,6 +3508,14 @@ struct menuitem g_2PMissionOptionsHMenuItems[] = {
 		L_OPTIONS_184, // "Display"
 		0,
 		(void *)&g_MissionDisplayOptionsMenuDialog,
+	},
+	{
+		MENUITEMTYPE_SELECTABLE,
+		0,
+		MENUITEMFLAG_SELECTABLE_OPENSDIALOG | MENUITEMFLAG_LITERAL_TEXT,
+		(uintptr_t)"Extended\n",
+		0,
+		(void*)&g_ExtendedMenuDialog,
 	},
 	{
 		MENUITEMTYPE_SEPARATOR,
@@ -3554,6 +3572,14 @@ struct menuitem g_2PMissionOptionsVMenuItems[] = {
 		L_OPTIONS_184, // "Display"
 		0,
 		(void *)&g_2PMissionDisplayOptionsVMenuDialog,
+	},
+	{
+		MENUITEMTYPE_SELECTABLE,
+		0,
+		MENUITEMFLAG_SELECTABLE_OPENSDIALOG | MENUITEMFLAG_LITERAL_TEXT,
+		(uintptr_t)"Extended\n",
+		0,
+		(void*)&g_ExtendedMenuDialog,
 	},
 	{
 		MENUITEMTYPE_SEPARATOR,
@@ -3622,6 +3648,14 @@ struct menuitem g_CiOptionsMenuItems[] = {
 		L_OPTIONS_121, // "Cinema"
 		6,
 		(void *)&g_CinemaMenuDialog,
+	},
+	{
+		MENUITEMTYPE_SELECTABLE,
+		0,
+		MENUITEMFLAG_SELECTABLE_OPENSDIALOG | MENUITEMFLAG_BIGFONT | MENUITEMFLAG_LITERAL_TEXT,
+		(uintptr_t)"Extended\n",
+		7,
+		(void*)&g_ExtendedMenuDialog,
 	},
 	{ MENUITEMTYPE_END },
 };

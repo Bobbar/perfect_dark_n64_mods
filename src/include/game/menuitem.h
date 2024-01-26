@@ -31,6 +31,7 @@ Gfx *menuitemModelRender(Gfx *gdl, struct menurendercontext *context);
 Gfx *menuitemLabelRender(Gfx *gdl, struct menurendercontext *context);
 
 Gfx *menuitemMeterRender(Gfx *gdl, struct menurendercontext *context);
+Gfx *menuitemColorBoxRender(Gfx *gdl, struct menurendercontext  *context);
 
 Gfx *menuitemSelectableRender(Gfx *gdl, struct menurendercontext *context);
 bool menuitemSelectableTick(struct menuitem *item, struct menuinputs *inputs, u32 tickflags);

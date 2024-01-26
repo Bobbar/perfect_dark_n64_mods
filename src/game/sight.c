@@ -20,6 +20,8 @@
 #include "data.h"
 #include "types.h"
 
+#define SIGHT_COLOUR PLAYER_EXTCFG().crosshaircolour
+
 /**
  * Return true if the prop is considered friendly (blue sight).
  */
@@ -438,7 +440,7 @@ Gfx *sightDrawAimer(Gfx *gdl, s32 x, s32 y, s32 radius, s32 cornergap, u32 colou
 	s32 viewright = viewleft + viewwidth - 1;
 	s32 viewbottom = viewtop + viewheight - 1;
 
-	gdl = textSetPrimColour(gdl, 0x00ff0028);
+	gdl = textSetPrimColour(gdl, PLAYER_EXTCFG().crosshaircolour);
 
 	// Draw the lines that span most of the viewport
 	if (PLAYERCOUNT() == 1) {
@@ -584,7 +586,7 @@ Gfx *sightDrawDelayedAimer(Gfx *gdl, s32 x, s32 y, s32 radius, s32 cornergap, u3
 	boxx = xpos;
 	boxy = ypos;
 
-	gdl = textSetPrimColour(gdl, 0x00ff0028);
+	gdl = textSetPrimColour(gdl, PLAYER_EXTCFG().crosshaircolour);
 
 	// Fill a 3x3 box at the live crosshair
 	gDPHudRectangle(gdl++, x - 1, y - 1, x + 1, y - 1);
@@ -638,7 +640,7 @@ Gfx *sightDrawDefault(Gfx *gdl, bool sighton)
 		// SIGHTTRACKTYPE_NONE is used for unarmed, but this appears to be
 		// unreachable. The aimer is never drawn when unarmed.
 		if (sighton) {
-			colour = 0x00ff0028;
+			colour = PLAYER_EXTCFG().crosshaircolour;
 			radius = 8;
 			cornergap = 5;
 			gdl = sightDrawAimer(gdl, x, y, radius, cornergap, colour);
@@ -648,7 +650,7 @@ Gfx *sightDrawDefault(Gfx *gdl, bool sighton)
 		// For most guns, render the aimer if holding R
 		if (sighton) {
 			if (g_Vars.currentplayer->lookingatprop.prop == NULL) {
-				colour = 0x00ff0028;
+				colour = PLAYER_EXTCFG().crosshaircolour;
 				radius = 8;
 				cornergap = 5;
 			} else {
@@ -677,7 +679,7 @@ Gfx *sightDrawDefault(Gfx *gdl, bool sighton)
 			s32 texty;
 
 			if (g_Vars.currentplayer->lookingatprop.prop == NULL) {
-				colour = 0x00ff0028;
+				colour = PLAYER_EXTCFG().crosshaircolour;
 				radius = 8;
 				cornergap = 5;
 			} else {
@@ -722,7 +724,7 @@ Gfx *sightDrawDefault(Gfx *gdl, bool sighton)
 
 		if (sighton) {
 			if (g_Vars.currentplayer->lookingatprop.prop == NULL) {
-				colour = 0x00ff0028;
+				colour = PLAYER_EXTCFG().crosshaircolour;
 				radius = 8;
 				cornergap = 5;
 			} else {
@@ -793,7 +795,7 @@ Gfx *sightDrawDefault(Gfx *gdl, bool sighton)
 
 		if (sighton) {
 			if (g_Vars.currentplayer->lookingatprop.prop == NULL) {
-				colour = 0x00ff0028;
+				colour = PLAYER_EXTCFG().crosshaircolour;
 				radius = 8;
 				cornergap = 5;
 			} else {
@@ -1199,7 +1201,7 @@ Gfx *sightDrawZoom(Gfx *gdl, bool sighton)
 
 	if (showzoomrange) {
 		gdl = text0f153628(gdl);
-		gdl = textSetPrimColour(gdl, 0x00ff0028);
+		gdl = textSetPrimColour(gdl, PLAYER_EXTCFG().crosshaircolour);
 
 		if (frac < 0.2f) {
 			cornerwidth *= 0.2f;
@@ -1369,7 +1371,7 @@ Gfx *sightDrawMaian(Gfx *gdl, bool sighton)
 	gSPTri4(gdl++, 0, 4, 5, 5, 3, 6, 7, 6, 1, 4, 7, 2);
 
 	gdl = func0f0d49c8(gdl);
-	gdl = textSetPrimColour(gdl, 0x00ff0028);
+	gdl = textSetPrimColour(gdl, PLAYER_EXTCFG().crosshaircolour);
 
 	// Draw border over inner points
 	gDPHudRectangle(gdl++, x - 4, y - 4, x - 4, y + 4); // left
@@ -1393,7 +1395,7 @@ Gfx *sightDrawTarget(Gfx *gdl)
 	mainOverrideVariable("sout", &var80070f9c);
 	mainOverrideVariable("sin", &var80070fa0);
 
-	gdl = textSetPrimColour(gdl, 0x00ff0028);
+	gdl = textSetPrimColour(gdl, PLAYER_EXTCFG().crosshaircolour);
 
 	gDPHudRectangle(gdl++, x + 2, y + 0, x + 6, y + 0);
 	gDPHudRectangle(gdl++, x + 2, y + 0, x + 4, y + 0);

@@ -522,4 +522,8 @@ extern struct menudialogdef g_HtFailedMenuDialog;
 extern struct menudialogdef g_HtCompletedMenuDialog;
 extern struct menudialogdef g_HangarListMenuDialog;
 
+extern struct extplayerconfig g_PlayerExtCfg[MAX_PLAYERS];
+extern s32 g_MusicDisableMpDeath;
+#define PLAYER_EXTCFG() g_PlayerExtCfg[g_Vars.currentplayerstats->mpindex & 3]
+
 #endif
