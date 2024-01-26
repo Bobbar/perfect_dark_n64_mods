@@ -1174,6 +1174,8 @@
 #define GAMEFILEFLAG_4C                   0x4c
 #define GAMEFILEFLAG_4D                   0x4d
 #define GAMEFILEFLAG_4E                   0x4e
+#define GAMEFILEFLAG_DISABLEMPMUSIC       0x4f
+#define GAMEFILEFLAG_ANTIALIASING         0x50
 
 #define GBGAME_OTHER 0
 #define GBGAME_PD    2
@@ -1660,6 +1662,7 @@
 #define MENUITEMFLAG_LESSHEIGHT              0x02000000
 #define MENUITEMFLAG_CAROUSEL_04000000       0x04000000
 #define MENUITEMFLAG_LITERAL_TEXT			 0x08000000
+#define MENUITEMFLAG_SLIDER_WIDE             0x10000000
 
 #define MENUITEMTYPE_LABEL       0x01
 #define MENUITEMTYPE_LIST        0x02

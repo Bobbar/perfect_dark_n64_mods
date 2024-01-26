@@ -274,6 +274,7 @@ extern s32 g_MpPlayerNum;
 extern u32 g_MpNumJoined;
 extern u16 g_ControlStyleOptions[];
 extern struct menudialogdef g_PreAndPostMissionBriefingMenuDialog;
+extern struct menudialogdef g_ExtendedMenuDialog;
 extern struct solostage g_SoloStages[];
 extern struct menudialogdef g_SoloMissionControlStyleMenuDialog;
 extern struct menudialogdef g_CiControlStyleMenuDialog;

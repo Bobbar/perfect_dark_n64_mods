@@ -2117,11 +2117,12 @@ Gfx *menuitemColorBoxRender(Gfx *gdl, struct menurendercontext *context)
 	u32 colour1;
 	s32 x1;
 	s32 x2;
+	union handlerdata data;
 
 	x1 = context->x;
 	x2 = x1 + width;
 
-	union handlerdata data;
+	
 	if (context->item->handlervoid) {
 		context->item->handlervoid(MENUOP_GETCOLOUR, context->item, &data);
 	}

@@ -38,7 +38,393 @@ u8 g_InventoryWeapon;
 struct menudialogdef g_2PMissionControlStyleMenuDialog;
 struct menudialogdef g_CiControlPlayer2MenuDialog;
 struct menudialogdef g_CinemaMenuDialog;
-extern struct menudialogdef g_ExtendedMenuDialog;
+
+s32 g_ExtMenuPlayer = 0;
+struct menudialogdef* g_ExtNextDialog = NULL;
+
+s32 g_BindIndex = 0;
+u32 g_BindContKey = 0;
+
+
+
+struct menuitem g_ExtendedSelectPlayerMenuItems[] = {
+	{
+		MENUITEMTYPE_SELECTABLE,
+		0,
+		MENUITEMFLAG_LITERAL_TEXT,
+		(uintptr_t)"Player 1\n",
+		0,
+		menuhandlerSelectPlayer,
+	},
+	{
+		MENUITEMTYPE_SELECTABLE,
+		0,
+		MENUITEMFLAG_LITERAL_TEXT,
+		(uintptr_t)"Player 2\n",
+		0,
+		menuhandlerSelectPlayer,
+	},
+	{
+		MENUITEMTYPE_SELECTABLE,
+		0,
+		MENUITEMFLAG_LITERAL_TEXT,
+		(uintptr_t)"Player 3\n",
+		0,
+		menuhandlerSelectPlayer,
+	},
+	{
+		MENUITEMTYPE_SELECTABLE,
+		0,
+		MENUITEMFLAG_LITERAL_TEXT,
+		(uintptr_t)"Player 4\n",
+		0,
+		menuhandlerSelectPlayer,
+	},
+	{
+		MENUITEMTYPE_SEPARATOR,
+		0,
+		0,
+		0,
+		0,
+		NULL,
+	},
+	{
+		MENUITEMTYPE_SELECTABLE,
+		0,
+		MENUITEMFLAG_SELECTABLE_CLOSESDIALOG,
+		L_OPTIONS_213, // "Back"
+		0,
+		NULL,
+	},
+	{ MENUITEMTYPE_END },
+};
+
+struct menudialogdef g_ExtendedSelectPlayerMenuDialog = {
+	MENUDIALOGTYPE_DEFAULT,
+	(uintptr_t)"Select Player",
+	g_ExtendedSelectPlayerMenuItems,
+	NULL,
+	MENUDIALOGFLAG_LITERAL_TEXT,
+	NULL,
+};
+
+MenuItemHandlerResult menuhandlerSelectPlayer(s32 operation, struct menuitem* item, union handlerdata* data)
+{
+	if (operation == MENUOP_SET) {
+		g_ExtMenuPlayer = item - g_ExtendedSelectPlayerMenuItems;
+		((char*)g_ExtNextDialog->title)[7] = g_ExtMenuPlayer + '1';
+		menuPushDialog(g_ExtNextDialog);
+	}
+
+	return 0;
+}
+
+
+MenuItemHandlerResult menuhandlerDisableMpDeathMusic(s32 operation, struct menuitem* item, union handlerdata* data)
+{
+	switch (operation) {
+	case MENUOP_GET:
+		return g_MusicDisableMpDeath;
+	case MENUOP_SET:
+		g_MusicDisableMpDeath = data->checkbox.value;
+		g_Vars.modifiedfiles |= MODFILE_GAME;
+		break;
+	}
+
+	return 0;
+}
+
+struct menuitem g_ExtendedAudioMenuItems[] = {
+	{
+		MENUITEMTYPE_CHECKBOX,
+		0,
+		MENUITEMFLAG_LITERAL_TEXT,
+		(uintptr_t)"Disable MP Death Music",
+		0,
+		menuhandlerDisableMpDeathMusic,
+	},
+	{
+		MENUITEMTYPE_SEPARATOR,
+		0,
+		0,
+		0,
+		0,
+		NULL,
+	},
+	{
+		MENUITEMTYPE_SELECTABLE,
+		0,
+		MENUITEMFLAG_SELECTABLE_CLOSESDIALOG,
+		L_OPTIONS_213, // "Back"
+		0,
+		NULL,
+	},
+	{ MENUITEMTYPE_END },
+};
+
+struct menudialogdef g_ExtendedAudioMenuDialog = {
+	MENUDIALOGTYPE_DEFAULT,
+	(uintptr_t)"Extended Audio Options",
+	g_ExtendedAudioMenuItems,
+	NULL,
+	MENUDIALOGFLAG_LITERAL_TEXT,
+	NULL,
+};
+
+MenuItemHandlerResult menuhandlerCrosshairR(s32 operation, struct menuitem* item, union handlerdata* data)
+{
+	u32 newColor;
+
+	switch (operation) {
+	case MENUOP_GETSLIDER:
+		data->slider.value = (g_PlayerExtCfg[g_ExtMenuPlayer].crosshaircolour >> 24) & 0xFF;
+		break;
+
+	case MENUOP_SET:
+		newColor = (g_PlayerExtCfg[g_ExtMenuPlayer].crosshaircolour & 0xFFFFFF) | data->slider.value << 24;
+		g_PlayerExtCfg[g_ExtMenuPlayer].crosshaircolour = newColor;
+		g_Vars.modifiedfiles |= MODFILE_GAME;
+		break;
+	}
+
+	return 0;
+}
+
+MenuItemHandlerResult menuhandlerCrosshairG(s32 operation, struct menuitem* item, union handlerdata* data)
+{
+	u32 newColor;
+
+	switch (operation) {
+	case MENUOP_GETSLIDER:
+		data->slider.value = (g_PlayerExtCfg[g_ExtMenuPlayer].crosshaircolour >> 16) & 0xFF;
+		break;
+
+	case MENUOP_SET:
+		newColor = (g_PlayerExtCfg[g_ExtMenuPlayer].crosshaircolour & 0xFF00FFFF) | data->slider.value << 16;
+		g_PlayerExtCfg[g_ExtMenuPlayer].crosshaircolour = newColor;
+		g_Vars.modifiedfiles |= MODFILE_GAME;
+		break;
+	}
+
+	return 0;
+}
+
+MenuItemHandlerResult menuhandlerCrosshairB(s32 operation, struct menuitem* item, union handlerdata* data)
+{
+	u32 newColor;
+
+	switch (operation) {
+	case MENUOP_GETSLIDER:
+		data->slider.value = (g_PlayerExtCfg[g_ExtMenuPlayer].crosshaircolour >> 8) & 0xFF;
+		break;
+
+	case MENUOP_SET:
+		newColor = (g_PlayerExtCfg[g_ExtMenuPlayer].crosshaircolour & 0xFFFF00FF) | data->slider.value << 8;
+		g_PlayerExtCfg[g_ExtMenuPlayer].crosshaircolour = newColor;
+		g_Vars.modifiedfiles |= MODFILE_GAME;
+		break;
+	}
+
+	return 0;
+}
+
+MenuItemHandlerResult menuhandlerCrosshairA(s32 operation, struct menuitem* item, union handlerdata* data)
+{
+	u32 newColor;
+
+	switch (operation) {
+	case MENUOP_GETSLIDER:
+		data->slider.value = g_PlayerExtCfg[g_ExtMenuPlayer].crosshaircolour & 0xFF;
+		break;
+
+	case MENUOP_SET:
+		newColor = (g_PlayerExtCfg[g_ExtMenuPlayer].crosshaircolour & 0xFFFFFF00) | data->slider.value;
+		g_PlayerExtCfg[g_ExtMenuPlayer].crosshaircolour = newColor;
+		g_Vars.modifiedfiles |= MODFILE_GAME;
+		break;
+	}
+
+	return 0;
+}
+
+MenuItemHandlerResult menuhandlerCrosshairColorPreview(s32 operation, struct menuitem* item, union handlerdata* data)
+{
+	if (operation == MENUOP_GETCOLOUR) {
+		data->label.colour1 = g_PlayerExtCfg[g_ExtMenuPlayer].crosshaircolour;
+	}
+
+	return 0;
+}
+
+struct menuitem g_ExtendedGameCrosshairColourMenuItems[] = {
+	{
+		MENUITEMTYPE_SLIDER,
+		0,
+		MENUITEMFLAG_LITERAL_TEXT | MENUITEMFLAG_SLIDER_WIDE,
+		(uintptr_t)"Red",
+		255,
+		menuhandlerCrosshairR,
+	},
+	{
+		MENUITEMTYPE_SLIDER,
+		0,
+		MENUITEMFLAG_LITERAL_TEXT | MENUITEMFLAG_SLIDER_WIDE,
+		(uintptr_t)"Green",
+		255,
+		menuhandlerCrosshairG,
+	},
+	{
+		MENUITEMTYPE_SLIDER,
+		0,
+		MENUITEMFLAG_LITERAL_TEXT | MENUITEMFLAG_SLIDER_WIDE,
+		(uintptr_t)"Blue",
+		255,
+		menuhandlerCrosshairB,
+	},
+	{
+		MENUITEMTYPE_SLIDER,
+		0,
+		MENUITEMFLAG_LITERAL_TEXT | MENUITEMFLAG_SLIDER_WIDE,
+		(uintptr_t)"Alpha",
+		255,
+		menuhandlerCrosshairA,
+	},
+	{
+		MENUITEMTYPE_SEPARATOR,
+		0,
+		0,
+		0,
+		0,
+		NULL,
+	},
+	{
+		MENUITEMTYPE_COLORBOX,
+		0,
+		0,
+		0,
+		0,
+		menuhandlerCrosshairColorPreview,
+	},
+	{
+		MENUITEMTYPE_SEPARATOR,
+		0,
+		0,
+		0,
+		0,
+		NULL,
+	},
+	{
+		MENUITEMTYPE_SELECTABLE,
+		0,
+		MENUITEMFLAG_SELECTABLE_CLOSESDIALOG,
+		L_OPTIONS_213, // "Back"
+		0,
+		NULL,
+	},
+	{ MENUITEMTYPE_END },
+};
+
+struct menudialogdef g_ExtendedGameCrosshairColourMenuDialog = {
+	MENUDIALOGTYPE_DEFAULT,
+	(uintptr_t)"Crosshair Colour",
+	g_ExtendedGameCrosshairColourMenuItems,
+	NULL,
+	MENUDIALOGFLAG_LITERAL_TEXT,
+	NULL,
+};
+
+struct menuitem g_ExtendedGameMenuItems[] = {
+	{
+		MENUITEMTYPE_SELECTABLE,
+		0,
+		MENUITEMFLAG_LITERAL_TEXT | MENUITEMFLAG_SELECTABLE_OPENSDIALOG,
+		(uintptr_t)"Crosshair Colour\n",
+		0,
+		(void*)&g_ExtendedGameCrosshairColourMenuDialog,
+	},
+	{
+		MENUITEMTYPE_SEPARATOR,
+		0,
+		0,
+		0,
+		0,
+		NULL,
+	},
+	{
+		MENUITEMTYPE_SELECTABLE,
+		0,
+		MENUITEMFLAG_SELECTABLE_CLOSESDIALOG,
+		L_OPTIONS_213, // "Back"
+		0,
+		NULL,
+	},
+	{ MENUITEMTYPE_END },
+};
+
+static char g_ExtendedGameMenuTitle[] = "Player 1 Game Options";
+struct menudialogdef g_ExtendedGameMenuDialog = {
+	MENUDIALOGTYPE_DEFAULT,
+	(uintptr_t)g_ExtendedGameMenuTitle,
+	g_ExtendedGameMenuItems,
+	NULL,
+	MENUDIALOGFLAG_LITERAL_TEXT,
+	NULL,
+};
+
+MenuItemHandlerResult menuhandlerOpenGameMenu(s32 operation, struct menuitem* item, union handlerdata* data)
+{
+	if (operation == MENUOP_SET) {
+		g_ExtNextDialog = &g_ExtendedGameMenuDialog;
+		menuPushDialog(&g_ExtendedSelectPlayerMenuDialog);
+	}
+	return 0;
+}
+
+struct menuitem g_ExtendedMenuItems[] = {
+	{
+		MENUITEMTYPE_SELECTABLE,
+		0,
+		MENUITEMFLAG_SELECTABLE_OPENSDIALOG | MENUITEMFLAG_LITERAL_TEXT,
+		(uintptr_t)"Audio\n",
+		0,
+		(void*)&g_ExtendedAudioMenuDialog,
+	},
+	{
+		MENUITEMTYPE_SELECTABLE,
+		0,
+		MENUITEMFLAG_LITERAL_TEXT,
+		(uintptr_t)"Game\n",
+		0,
+		menuhandlerOpenGameMenu,
+	},
+	{
+		MENUITEMTYPE_SEPARATOR,
+		0,
+		0,
+		0,
+		0,
+		NULL,
+	},
+	{
+		MENUITEMTYPE_SELECTABLE,
+		0,
+		MENUITEMFLAG_SELECTABLE_CLOSESDIALOG,
+		L_OPTIONS_213, // "Back"
+		0,
+		NULL,
+	},
+	{ MENUITEMTYPE_END },
+};
+
+struct menudialogdef g_ExtendedMenuDialog = {
+	MENUDIALOGTYPE_DEFAULT,
+	(uintptr_t)"Extended Options",
+	g_ExtendedMenuItems,
+	NULL,
+	MENUDIALOGFLAG_LITERAL_TEXT,
+	NULL,
+};
+
 
 
 char *menuTextCurrentStageName(struct menuitem *item)
@@ -674,6 +1060,10 @@ MenuItemHandlerResult menuhandlerSfxVolume(s32 operation, struct menuitem *item,
 
 	return 0;
 }
+
+
+
+
 
 MenuDialogHandlerResult menudialogBriefing(s32 operation, struct menudialogdef *dialogdef, union handlerdata *data)
 {
@@ -2550,7 +2940,7 @@ struct menuitem g_VideoOptionsMenuItems[] = {
 		MENUITEMTYPE_CHECKBOX,
 		0,
 		MENUITEMFLAG_LITERAL_TEXT,
-		(uintptr_t)"Anti-Aliasing.\n",
+		(uintptr_t)"Anti-Aliasing\n",
 		0,
 		menuhandlerAntiAlias,
 	},
@@ -3432,6 +3822,8 @@ struct menudialogdef g_ChangeAgentMenuDialog = {
 	NULL,
 };
 
+
+
 struct menuitem g_SoloMissionOptionsMenuItems[] = {
 	{
 		MENUITEMTYPE_SELECTABLE,
@@ -3465,14 +3857,14 @@ struct menuitem g_SoloMissionOptionsMenuItems[] = {
 		0,
 		(void *)&g_MissionDisplayOptionsMenuDialog,
 	},
-	{
+	/*{
 		MENUITEMTYPE_SELECTABLE,
 		0,
 		MENUITEMFLAG_SELECTABLE_OPENSDIALOG | MENUITEMFLAG_BIGFONT | MENUITEMFLAG_LITERAL_TEXT,
 		(uintptr_t)"Extended\n",
 		0,
-		(void*)&g_ExtendedMenuDialog,
-	},
+		(void *)&g_ExtendedMenuDialog,
+	},*/
 	{ MENUITEMTYPE_END },
 };
 
@@ -3509,14 +3901,14 @@ struct menuitem g_2PMissionOptionsHMenuItems[] = {
 		0,
 		(void *)&g_MissionDisplayOptionsMenuDialog,
 	},
-	{
+	/*{
 		MENUITEMTYPE_SELECTABLE,
 		0,
 		MENUITEMFLAG_SELECTABLE_OPENSDIALOG | MENUITEMFLAG_LITERAL_TEXT,
 		(uintptr_t)"Extended\n",
 		0,
-		(void*)&g_ExtendedMenuDialog,
-	},
+		(void *)&g_ExtendedMenuDialog,
+	},*/
 	{
 		MENUITEMTYPE_SEPARATOR,
 		0,
@@ -3573,14 +3965,14 @@ struct menuitem g_2PMissionOptionsVMenuItems[] = {
 		0,
 		(void *)&g_2PMissionDisplayOptionsVMenuDialog,
 	},
-	{
+	/*{
 		MENUITEMTYPE_SELECTABLE,
 		0,
 		MENUITEMFLAG_SELECTABLE_OPENSDIALOG | MENUITEMFLAG_LITERAL_TEXT,
 		(uintptr_t)"Extended\n",
 		0,
-		(void*)&g_ExtendedMenuDialog,
-	},
+		(void *)&g_ExtendedMenuDialog,
+	},*/
 	{
 		MENUITEMTYPE_SEPARATOR,
 		0,
@@ -3655,7 +4047,7 @@ struct menuitem g_CiOptionsMenuItems[] = {
 		MENUITEMFLAG_SELECTABLE_OPENSDIALOG | MENUITEMFLAG_BIGFONT | MENUITEMFLAG_LITERAL_TEXT,
 		(uintptr_t)"Extended\n",
 		7,
-		(void*)&g_ExtendedMenuDialog,
+		(void *)&g_ExtendedMenuDialog,
 	},
 	{ MENUITEMTYPE_END },
 };

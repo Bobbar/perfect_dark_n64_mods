@@ -121,6 +121,9 @@ void gamefileApplyOptions(struct gamefile *file)
 	g_Vars.coopfriendlyfire = pakHasBitflag(GAMEFILEFLAG_COOPFRIENDLYFIRE, file->flags) ? true : false;
 	g_Vars.antiradaron = pakHasBitflag(GAMEFILEFLAG_ANTIRADARON, file->flags) ? true : false;
 
+	g_MusicDisableMpDeath = pakHasBitflag(GAMEFILEFLAG_DISABLEMPMUSIC, file->flags);
+	g_LvAntialias = pakHasBitflag(GAMEFILEFLAG_ANTIALIASING, file->flags);
+
 #if VERSION >= VERSION_PAL_BETA
 	g_Vars.language = 0;
 
@@ -223,6 +226,9 @@ void gamefileLoadDefaults(struct gamefile *file)
 	pakSetBitflag(GAMEFILEFLAG_LANGBIT3, g_GameFile.flags, ((g_Vars.language & 0x04) == 0x04));
 #endif
 
+	pakSetBitflag(GAMEFILEFLAG_DISABLEMPMUSIC, file->flags, false);
+	pakSetBitflag(GAMEFILEFLAG_ANTIALIASING, file->flags, false);
+
 	file->unk1e = 0;
 
 	for (i = 0; i < ARRAYCOUNT(file->besttimes); i++) {
@@ -276,6 +282,12 @@ s32 gamefileLoad(s32 device)
 	struct savebuffer buffer;
 	s32 ret;
 	u32 stack;
+	u32 chColor;
+	u8 chR;
+	u8 chG;
+	u8 chB;
+	u8 chA;
+	chColor = 0;
 
 	p1index = g_Vars.coopplayernum >= 0 || g_Vars.antiplayernum >= 0 ? 0 : 4;
 	p2index = g_Vars.coopplayernum >= 0 || g_Vars.antiplayernum >= 0 ? 1 : 5;
@@ -343,8 +355,21 @@ s32 gamefileLoad(s32 device)
 			}
 
 			for (i = 0; i < 4; i++) {
-				g_GameFile.weaponsfound[i] = savebufferReadBits(&buffer, 8);
+				g_GameFile.weaponsfound[i] = 0xFF; // Always have all weapons found.
 			}
+
+			// Load & parse crosshair color.
+			chR = savebufferReadBits(&buffer, 8);
+			chG = savebufferReadBits(&buffer, 8);
+			chB = savebufferReadBits(&buffer, 8);
+			chA = savebufferReadBits(&buffer, 8);
+
+			chColor = (chColor & 0xFFFFFF) | (chR << 24);
+			chColor = (chColor & 0xFF00FFFF) | (chG << 16);
+			chColor = (chColor & 0xFFFF00FF) | (chB << 8);
+			chColor = (chColor & 0xFFFFFF00) | chA;
+
+			PLAYER_EXTCFG().crosshaircolour = chColor;
 
 #if VERSION >= VERSION_NTSC_1_0
 			if (pakHasBitflag(GAMEFILEFLAG_FOUNDTIMEDMINE, g_GameFile.flags)) {
@@ -359,6 +384,9 @@ s32 gamefileLoad(s32 device)
 				frSetWeaponFound(WEAPON_REMOTEMINE);
 			}
 #endif
+
+
+		
 
 			func0f0d54c4(&buffer);
 			gamefileApplyOptions(&g_GameFile);
@@ -461,6 +489,10 @@ s32 gamefileSave(s32 device, s32 fileid, u16 deviceserial)
 	pakSetBitflag(GAMEFILEFLAG_LANGBIT3, g_GameFile.flags, (g_Vars.language & 0x04) == 0x04);
 #endif
 
+	pakSetBitflag(GAMEFILEFLAG_DISABLEMPMUSIC, g_GameFile.flags, g_MusicDisableMpDeath == true);
+	pakSetBitflag(GAMEFILEFLAG_ANTIALIASING, g_GameFile.flags, g_LvAntialias == true);
+
+
 	if (device >= 0) {
 		savebufferClear(&buffer);
 		func0f0d55a4(&buffer, g_GameFile.name);
@@ -508,9 +540,15 @@ s32 gamefileSave(s32 device, s32 fileid, u16 deviceserial)
 			savebufferOr(&buffer, g_GameFile.firingrangescores[i], i == 8 ? 2 : 8);
 		}
 
-		for (i = 0; i < 4; i++) {
+		/*for (i = 0; i < 4; i++) {
 			savebufferOr(&buffer, g_GameFile.weaponsfound[i], 8);
-		}
+		}*/
+
+		// Save crosshair color.
+		savebufferOr(&buffer, (PLAYER_EXTCFG().crosshaircolour >> 24) & 0xFF, 8);
+		savebufferOr(&buffer, (PLAYER_EXTCFG().crosshaircolour >> 16) & 0xFF, 8);
+		savebufferOr(&buffer, (PLAYER_EXTCFG().crosshaircolour >> 8) & 0xFF, 8);
+		savebufferOr(&buffer, PLAYER_EXTCFG().crosshaircolour & 0xFF, 8);
 
 		func0f0d54c4(&buffer);
 

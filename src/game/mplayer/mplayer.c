@@ -107,16 +107,17 @@ struct mpweapon g_MpWeapons[NUM_MPWEAPONS] = {
 	/*0x2e*/ { WEAPON_DISABLED },
 };
 
-
-#define PLAYER_EXT_CFG_DEFAULT { \
-	.crosshaircolour = 0x00ff0028, \
-}
+//
+//#define PLAYER_EXT_CFG_DEFAULT { \
+//	.crosshaircolour = 0x00ff0028, \
+//	.crosshairsize = 2, \
+//}
 
 struct extplayerconfig g_PlayerExtCfg[MAX_PLAYERS] = {
-	PLAYER_EXT_CFG_DEFAULT,
-	PLAYER_EXT_CFG_DEFAULT,
-	PLAYER_EXT_CFG_DEFAULT,
-	PLAYER_EXT_CFG_DEFAULT,
+	{0x00ff0028, 2,},
+	{0x00ff0028, 2,},
+	{0x00ff0028, 2,},
+	{0x00ff0028, 2,},
 };
 
 /**

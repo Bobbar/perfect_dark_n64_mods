@@ -664,6 +664,10 @@ void menuCalculateItemSize(struct menuitem *item, s16 *width, s16 *height, struc
 			*height = 22;
 			*width = 120;
 		}
+		else if (item->flags & MENUITEMFLAG_SLIDER_WIDE) {
+			*width = 200;
+			*height = VERSION == VERSION_JPN_FINAL ? 14 : 12;
+		}
 		break;
 	case MENUITEMTYPE_CHECKBOX:
 		if (item->flags & MENUITEMFLAG_SMALLFONT) {
