@@ -3857,14 +3857,14 @@ struct menuitem g_SoloMissionOptionsMenuItems[] = {
 		0,
 		(void *)&g_MissionDisplayOptionsMenuDialog,
 	},
-	/*{
+	{
 		MENUITEMTYPE_SELECTABLE,
 		0,
 		MENUITEMFLAG_SELECTABLE_OPENSDIALOG | MENUITEMFLAG_BIGFONT | MENUITEMFLAG_LITERAL_TEXT,
 		(uintptr_t)"Extended\n",
 		0,
 		(void *)&g_ExtendedMenuDialog,
-	},*/
+	},
 	{ MENUITEMTYPE_END },
 };
 
@@ -3901,14 +3901,14 @@ struct menuitem g_2PMissionOptionsHMenuItems[] = {
 		0,
 		(void *)&g_MissionDisplayOptionsMenuDialog,
 	},
-	/*{
+	{
 		MENUITEMTYPE_SELECTABLE,
 		0,
 		MENUITEMFLAG_SELECTABLE_OPENSDIALOG | MENUITEMFLAG_LITERAL_TEXT,
 		(uintptr_t)"Extended\n",
 		0,
 		(void *)&g_ExtendedMenuDialog,
-	},*/
+	},
 	{
 		MENUITEMTYPE_SEPARATOR,
 		0,
@@ -3965,14 +3965,14 @@ struct menuitem g_2PMissionOptionsVMenuItems[] = {
 		0,
 		(void *)&g_2PMissionDisplayOptionsVMenuDialog,
 	},
-	/*{
+	{
 		MENUITEMTYPE_SELECTABLE,
 		0,
 		MENUITEMFLAG_SELECTABLE_OPENSDIALOG | MENUITEMFLAG_LITERAL_TEXT,
 		(uintptr_t)"Extended\n",
 		0,
 		(void *)&g_ExtendedMenuDialog,
-	},*/
+	},
 	{
 		MENUITEMTYPE_SEPARATOR,
 		0,

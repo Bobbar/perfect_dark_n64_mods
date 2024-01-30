@@ -11,7 +11,6 @@ extern struct menudialogdef g_AcceptMissionMenuDialog;
 extern struct menudialogdef g_PreAndPostMissionBriefingMenuDialog;
 extern struct menudialogdef g_RetryMissionMenuDialog;
 extern struct menudialogdef g_NextMissionMenuDialog;
-//extern struct menudialogdef g_ExtendedMenuDialog;
 
 char *menuTextCurrentStageName(struct menuitem *item);
 char *soloMenuTextDifficulty(struct menuitem *item);
